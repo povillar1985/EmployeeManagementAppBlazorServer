@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeManagementAppBlazorServer", "EmployeeManagementAppBlazorServer\EmployeeManagementAppBlazorServer.csproj", "{3B7B76D0-18E3-45D8-B69D-BB3A132769FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeManagementAppBlazorServerTests", "EmployeeManagementAppBlazorServerTests\EmployeeManagementAppBlazorServerTests.csproj", "{1D77331E-5FB8-4913-A760-3EA252793F38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{3B7B76D0-18E3-45D8-B69D-BB3A132769FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B7B76D0-18E3-45D8-B69D-BB3A132769FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B7B76D0-18E3-45D8-B69D-BB3A132769FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D77331E-5FB8-4913-A760-3EA252793F38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D77331E-5FB8-4913-A760-3EA252793F38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D77331E-5FB8-4913-A760-3EA252793F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D77331E-5FB8-4913-A760-3EA252793F38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
