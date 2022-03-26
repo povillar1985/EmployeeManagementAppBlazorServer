@@ -47,5 +47,8 @@ namespace EmployeeManagementAppBlazorServer.Repositories.Tests
             Assert.AreEqual("name", result.Name);
             Assert.AreEqual("description", result.Description);
         }
+
+        //More tests
+        //We can also make tests for components using bunit (been actively doing this at work)
     }
 }
