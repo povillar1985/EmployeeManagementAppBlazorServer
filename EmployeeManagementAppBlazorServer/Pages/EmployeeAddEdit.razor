@@ -1,0 +1,139 @@
+﻿@page "/employee/add"
+@page "/employee/edit/{employeeId:int}"
+
+@inject IEmployeeRepository EmployeeService
+@inject IDepartmentRepository DepartmentService
+@inject NavigationManager Navigation
+
+@using System.IO
+@inject IWebHostEnvironment env
+
+<h3>Employee Add/Edit</h3>
+<EditForm Model="Employee" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="col-8">
+        <div>
+            <label for="Department">Department</label>
+            <InputSelect @bind-Value="Employee.DepartmentId">
+                <option value=0>--Select Department--</option>
+                @if (departments != null)
+                {
+                    foreach (var department in departments)
+                    {
+                        <option value=@department.Id>@department.Name</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="(()=>Employee.DepartmentId)" />
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-6">
+                <label for="FirstName">FirstName</label>
+                <InputText @bind-Value="@Employee.FirstName" />
+                <ValidationMessage For="(()=>Employee.FirstName)" />
+            </div>
+            <div class="col-6">
+                <label for="LastName">LastName</label>
+                <InputText @bind-Value="@Employee.LastName" />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-4">
+                <label for="Email">Email</label>
+                <InputText @bind-Value="@Employee.Email" />
+            </div>
+            <div class="col-4">
+                <label for="Phone">Phone</label>
+                <InputText @bind-Value="@Employee.Phone" />
+            </div>
+            <div class="col-4">
+                <label for="Salary">Salary</label>
+                <InputNumber @bind-Value="@Employee.Salary" />
+            </div>
+        </div>
+        <br />
+        <div class="row col-4">
+            <label for="Picture">Picture</label>
+            <InputFile OnChange="OnInputFileChange" />
+            <img src="@Employee.PhotoUrl" height="100" width="100" />
+        </div>
+        <br />
+        <div class="row">
+            <label for="Bio">Bio</label>
+            <InputTextArea @bind-Value="@Employee.Bio" />            
+        </div>
+        <br />
+        <div class="row">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int EmployeeId { get; set; }
+
+    public Employee Employee { get; set; } = new();
+
+    private IEnumerable<Department> departments;
+
+    string Message = "No file(s) selected";
+    IReadOnlyList<IBrowserFile> selectedFiles;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        departments = await DepartmentService.GetAllAsync();
+
+        if (EmployeeId > 0 && Employee?.Id == 0)
+        {
+            Employee = await EmployeeService.GetAsync(EmployeeId);
+        }
+    }
+
+    private async Task OnValidSubmit()
+    {
+        if (EmployeeId > 0 && Employee.Id > 0)
+        {
+            //Update
+            await EmployeeService.UpdateAsync(Employee);
+        }
+        else
+        {
+            //Insert
+            Employee = await EmployeeService.AddAsync(Employee);
+        }
+
+        await UploadToServer();
+
+        //redirect back to list
+        Navigation.NavigateTo("/employees");
+    }
+
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        selectedFiles = e.GetMultipleFiles();
+        Message = $"{selectedFiles.Count} file(s) selected";
+
+        Employee.PhotoUrl = "Photos/" + e.File.Name;
+
+        this.StateHasChanged();
+    }
+
+    //Can be move to helper
+    private async Task UploadToServer()
+    {
+        foreach (var file in selectedFiles)
+        {
+            Stream stream = file.OpenReadStream();
+            var path = $"{env.WebRootPath}\\Photos\\{file.Name}";
+            FileStream fs = File.Create(path);
+            await stream.CopyToAsync(fs);
+            stream.Close();
+            fs.Close();
+        }
+    }
+}
