@@ -64,7 +64,7 @@
         <br />
         <div class="row">
             <label for="Bio">Bio</label>
-            <InputTextArea @bind-Value="@Employee.Bio" />            
+            <InputTextArea @bind-Value="@Employee.Bio" />
         </div>
         <br />
         <div class="row">
@@ -126,14 +126,15 @@
     //Can be move to helper
     private async Task UploadToServer()
     {
-        foreach (var file in selectedFiles)
-        {
-            Stream stream = file.OpenReadStream();
-            var path = $"{env.WebRootPath}\\Photos\\{file.Name}";
-            FileStream fs = File.Create(path);
-            await stream.CopyToAsync(fs);
-            stream.Close();
-            fs.Close();
-        }
+        if (selectedFiles != null && selectedFiles.Any())
+            foreach (var file in selectedFiles)
+            {
+                Stream stream = file.OpenReadStream();
+                var path = $"{env.WebRootPath}\\Photos\\{file.Name}";
+                FileStream fs = File.Create(path);
+                await stream.CopyToAsync(fs);
+                stream.Close();
+                fs.Close();
+            }
     }
 }

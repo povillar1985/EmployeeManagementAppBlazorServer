@@ -66,6 +66,7 @@ namespace EmployeeManagementAppBlazorServer.Repositories
                     Email = x.Email,
                     Phone = x.Phone,
                     Bio = x.Bio,
+                    Salary = x.Salary,
                     PhotoUrl = x.PhotoUrl,
                     Department = new Department { Id = x.DepartmentId, Name = x.Department.Name }
                 }).ToListAsync();
